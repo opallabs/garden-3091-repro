@@ -1,0 +1,33 @@
+kind: Project
+name: tmp
+defaultEnvironment: dev
+environments:
+  - name: dev
+    defaultNamespace: dev-${local.username}
+providers:
+  - name: kubernetes
+    environments:
+      - dev
+    context: tmp-dev
+    buildMode: kaniko
+    storage:
+      registry: # images are built and shared here
+        storageClass: azurefile
+        size: 100000
+    kaniko:
+      namespace: null  # <--- use the project namespace for builds
+    deploymentRegistry:
+      hostname: tmp-registry.website.com
+      namespace: tmp-dev
+    imagePullSecrets:
+      - name: tmp-dev-image-registry-credential
+        namespace: tmp-dev-shared
+    copySecrets:
+      - name: tmp-dev-storage-secrets
+        namespace: tmp-dev-shared
+      - name: tmp-dev-apns-secrets
+        namespace: tmp-dev-shared
+    setupIngressController: false
+modules:
+  exclude:
+    - devops/**/*
