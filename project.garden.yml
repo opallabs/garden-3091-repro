@@ -21,12 +21,7 @@ providers:
       namespace: tmp-dev
     imagePullSecrets:
       - name: tmp-dev-image-registry-credential
-        namespace: tmp-dev-shared
-    copySecrets:
-      - name: tmp-dev-storage-secrets
-        namespace: tmp-dev-shared
-      - name: tmp-dev-apns-secrets
-        namespace: tmp-dev-shared
+        namespace: tmp-shared
     setupIngressController: false
 modules:
   exclude:
